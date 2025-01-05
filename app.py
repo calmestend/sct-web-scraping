@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-ENDPOINT = os.environ.get('ENDPOINT')
+ENDPOINT = "https://app.sct.gob.mx/sibuac_internet/ControllerUI"
 
 with open('data.json', 'r') as file:
     data = json.load(file)
@@ -17,19 +17,18 @@ with open('data.json', 'r') as file:
 def rutas():
     params = request.get_json()
 
-    ciudad_origen = params.get("ciudad_origen", "").ljust(4, '0')
-    ciudad_destino = params.get("ciudad_destino", "").ljust(4, '0')
+    ciudad_origen = params.get("ciudad_origen", "").ljust(4, '0');
+    ciudad_destino = params.get("ciudad_destino", "").ljust(4, '0');
 
-    estado_origen = data['puntos'][ciudad_origen]['estado']
-    estado_destino = data['puntos'][ciudad_destino]['estado']
+    estado_origen = params.get("estado_origen", "")
+    estado_destino = params.get("estado_destino", "")
 
     vehiculos = params.get("vehiculos", 1)
-    calcula_rendimiento = 'si' if params.get("calcula_rendimiento") == 'true' else None
-    tamanio_vehiculo = params.get("tamanio_vehiculo", 2)
-    rendimiento = params.get("rendimiento", 2.9)
-    combustible = params.get("combustible", 24)
 
-    zonas_urbanas = params.get("zonas_urbanas", 'false') == 'true'
+    calcula_rendimiento = 'si' if params.get("calcula_rendimiento", "no") == 'true' else None
+    tamanio_vehiculo = params.get("tamanio_vehiculo", "")
+    rendimiento = params.get("rendimiento", "")
+    combustible = params.get("combustible", "")
 
     query = {
         'action': 'cmdSolRutas',
@@ -87,4 +86,4 @@ def rutas():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
