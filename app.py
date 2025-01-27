@@ -12,7 +12,7 @@ ENDPOINT = "https://app.sct.gob.mx/sibuac_internet/ControllerUI"
 with open('data.json', 'r') as file:
     data = json.load(file)
 
-@app.route('/rutas', methods=['POST'])
+@app.route('/sct-api/v1/rutas', methods=['POST'])
 
 def rutas():
     params = request.get_json()
